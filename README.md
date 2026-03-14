@@ -1,4 +1,5 @@
 Sistema de Gerenciamento de ONG de Animais 🐾
+
 Este projeto consiste em um sistema de console desenvolvido em C++ para o gerenciamento de animais em uma ONG. Ele permite o cadastro detalhado de animais, a organização por tipos de cuidados necessários e o controle de disponibilidade para adoção.
 
 Projeto desenvolvido como parte do curso de Desenvolvimento de Software Multiplataforma na Fatec Porto Ferreira.
@@ -30,6 +31,6 @@ Herança e Polimorfismo: Classes especializadas para diferentes cuidados que her
 STL (Standard Template Library): Uso de std::vector para gerenciamento dinâmico de memória.
 
 👥 Autores
-Ariel Tainan Gonçalves Favaro
+Ariel Tainan Gonçalves Favaro : https://github.com/arielfavaro
 
 Meirielen da Silva
