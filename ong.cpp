@@ -1,12 +1,27 @@
-/*
- * ============================================================
- *  Fatec Porto Ferreira
- *  Desenvolvimento de Software Multiplataforma
- *
- *  Trabalho: Sistema de Gerenciamento de ONG de Animais
- *  Alunos:   Ariel Tainan Gonçalves Favaro e Meirielen da Silva
- *  Data:     13/03/2026
- * ============================================================
+/**
+ * PROJETO ONG "ANIMALCARE" 2 - TAREFAS PROPOSTAS
+ * --------------------------------------------------------------------------
+ * 1. SOBRECARGA DE CONSTRUTORES (Classe Animal)
+ * - Construtor padrão: Sem parâmetros.
+ * - Construtor parametrizado: Recebe nome, idade e espécie.
+ * - Teste: Instanciar objetos utilizando ambas as formas.
+ * * 2. SOBRECARGA DE MÉTODOS
+ * - Implementar mostrarDados() em duas versões:
+ * a) Simples: Exibe apenas nome, idade e espécie.
+ * b) Detalhada: Inclui status de adoção e tipo de cuidado necessário.
+ * * 3. DESTRUTORES
+ * - Implementar ~Animal() para exibir mensagem de log quando o objeto
+ * for removido da memória.
+ * - Teste: Remover animais da lista e observar a saída no console.
+ * * 4. RELACIONAMENTO ENTRE CLASSES E FLUXO
+ * - Classe Cadastro: Responsável pelo registro de novos animais.
+ * - Classe Adocao: Responsável por gerenciar animais disponíveis.
+ * - Integração: Conectar Cadastro e Adocao ao menu principal do sistema.
+ * * 5. REQUISITOS DE TESTE (PARTE 2)
+ * - Cadastrar no mínimo 3 animais diferentes.
+ * - Disponibilizar pelo menos 1 animal para adoção.
+ * - Validar as sobrecargas e o destrutor via console.
+ * --------------------------------------------------------------------------
  */
 
 #include <iostream>
