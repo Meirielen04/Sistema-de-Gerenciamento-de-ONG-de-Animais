@@ -45,6 +45,33 @@ class Animal {
         Animal(string n, int i, string r, string c, string p, string pe, string s)
             : nome(n), idade(i), raca(r), paraAdocao(false), cor(c), porte(p), personalidade(pe), sexo(s) {}
 
+        Animal() {
+            setNome("");
+            setIdade(0);
+            setRaca("");
+            setCor("");
+            setPorte("");
+            setPersonalidade("");
+            setSexo("");
+            setParaAdocao(false);
+        }
+
+        void setNome(string n) {nome = n; }
+        void setIdade(int i) {idade = i; }
+        void setRaca(string r) {raca = r; }
+        void setParaAdocao(bool status) {paraAdocao = status; }
+        void setCor(string c) {cor = c; }
+        void setPorte(string p) {porte = p; }
+        void setPersonalidade(string per) {personalidade = per; }
+        void setSexo(string s) {sexo = s; }
+
+        string getNome() { return nome; }
+        bool getParaAdocao() { return paraAdocao; }
+
+        virtual void cadastroDados(string n, int i, string especie) {
+            cout << " Resumo -> Nome: " << n << " | idade: " << i << " ano(s) | Especie/Raca: " << especie << endl;
+        }
+
         virtual void cadastroDados() {
             cout << "  Nome:           " << nome << endl;
             cout << "  Idade:          " << idade << " ano(s)" << endl;
@@ -56,13 +83,15 @@ class Animal {
             cout << "  Para adocao:    " << (paraAdocao ? "Sim" : "Nao") << endl;
         }
 
-        string getNome() { return nome; }
-        bool getParaAdocao() { return paraAdocao; }
-        void disponibilizarAdocao() { paraAdocao = true; }
+        virtual ~Animal() {
+            cout << "Animal ja adotado!" << endl;
+        }
+        
 };
 
 class CuidadosVeterinarios : public Animal {
     public:
+        CuidadosVeterinarios() : Animal() {}
         CuidadosVeterinarios(string n, int i, string r, string c, string p, string pe, string s)
             : Animal(n, i, r, c, p, pe, s) {}
 
@@ -74,6 +103,8 @@ class CuidadosVeterinarios : public Animal {
 
 class CuidadosAlimentares : public Animal {
     public:
+        CuidadosAlimentares() : Animal () {}
+
         CuidadosAlimentares(string n, int i, string r, string c, string p, string pe, string s)
             : Animal(n, i, r, c, p, pe, s) {}
 
@@ -85,6 +116,8 @@ class CuidadosAlimentares : public Animal {
 
 class CuidadosAbrigo : public Animal {
     public:
+        CuidadosAbrigo() : Animal() {}
+
         CuidadosAbrigo(string n, int i, string r, string c, string p, string pe, string s)
             : Animal(n, i, r, c, p, pe, s) {}
 
@@ -94,119 +127,138 @@ class CuidadosAbrigo : public Animal {
         }
 };
 
-// vector<Animal *> usa ponteiros para permitir polimorfismo (chamar cadastroDados das classes filhas)
-// &lista passa por referencia, modificando a lista original e nao uma copia
-void cadastrarAnimal(vector<Animal *> &lista) {
-    string nome, raca, cor, porte, personalidade, sexo;
-    int idade, tipo;
+class Cadastro {
+    private:
+        vector<Animal *> listaAnimais;
+    
+        public: 
+            void cadastrarAnimal() {
+                string nome, raca, cor, porte, personalidade, sexo;
+                int idade, tipo;
 
-    cout << "\nTipo de cuidado:" << endl;
-    cout << "  1 - Veterinario" << endl;
-    cout << "  2 - Alimentar" << endl;
-    cout << "  3 - Abrigo" << endl;
-    cout << "Escolha: ";
-    cin >> tipo;
+                cout << "\nTipo de cuidado:" << endl;
+                cout <<"  1 - veterinario" << endl;
+                cout << " 2 - Alimentar" << endl;
+                cout << " 3 - Abrigo" << endl;
+                cout << "Escolha: ";
+                cin >> tipo;
 
-    if (tipo < 1 || tipo > 3) {
-        cout << "Tipo invalido!\n";
-        cin.ignore();
-        return;
-    }
+                if (tipo < 1 || tipo > 3) {
+                    cout << "Tipo Inválido!\n";
+                    cin.ignore();
+                    return;
+                }
 
-    // descarta o "\n" que sobrou ao apertar enter na resposta
-    cin.ignore();
+                cin.ignore();
 
-    cout << "Nome: ";
-    getline(cin, nome);
+                cout << "Nome: ";
+                getline(cin, nome);
 
-    cout << "Idade: ";
-    cin >> idade;
-    cin.ignore();
+                cout << "Idade: ";
+                cin >> idade;
+                cin.ignore();
 
-    cout << "Raca: ";
-    getline(cin, raca);
+                cout << "Raca/Especie: ";
+                getline(cin, raca);
 
-    cout << "Cor: ";
-    getline(cin, cor);
+                cout << "Cor: ";
+                getline(cin, cor);
+                
+                cout << "Porte: ";
+                getline(cin, porte);
 
-    cout << "Porte: ";
-    getline(cin, porte);
+                cout << "Personalidade: ";
+                getline(cin, personalidade);
 
-    cout << "Personalidade: ";
-    getline(cin, personalidade);
+                cout << "Sexo: ";
+                getline(cin, sexo);
 
-    cout << "Sexo: ";
-    getline(cin, sexo);
+                Animal* novoAnimal = nullptr;
 
-    if (tipo == 1) {
-        lista.push_back(new CuidadosVeterinarios(nome, idade, raca, cor, porte, personalidade, sexo));
-    } else if (tipo == 2) {
-        lista.push_back(new CuidadosAlimentares(nome, idade, raca, cor, porte, personalidade, sexo));
-    } else {
-        lista.push_back(new CuidadosAbrigo(nome, idade, raca, cor, porte, personalidade, sexo));
-    }
+                if (tipo == 1) {
+                    novoAnimal = new CuidadosVeterinarios(nome, idade, raca, cor, porte, personalidade, sexo);
+                } else if (tipo == 2) {
+                    novoAnimal = new CuidadosAlimentares(nome, idade, raca, cor, porte, personalidade, sexo);
+                } else {
+                    novoAnimal = new CuidadosAbrigo(nome, idade, raca, cor, porte, personalidade, sexo);
+                }
 
-    cout << "\nAnimal cadastrado com sucesso!\n";
-}
+                listaAnimais.push_back(novoAnimal);
 
-void listarAnimais(vector<Animal *> &lista) {
-    if (lista.empty()) {
-        cout << "\nNenhum animal cadastrado.\n";
-        return;
-    }
+                cout << "\nAnimal cadastrado com sucesso!\n";
 
-    cout << "\n===== ANIMAIS CADASTRADOS =====\n";
+                novoAnimal->cadastroDados(nome, idade, raca);
+            }
 
-    // Exibe todos os animais cadastrados
-    for (int i = 0; i < lista.size(); i++) {
-        cout << "\n--- Animal #" << i + 1 << " ---" << endl;
-        lista[i]->cadastroDados();
-    }
+            void listarAnimais() {
+                if (listaAnimais.empty()) {
+                    cout << "\nNenhum animal cadastrado.\n";
+                    return;
+                }
 
-    cout << "\nTotal: " << lista.size() << " animal(is).\n";
-}
+                cout << "\n====Animais Cadastrados===\n";
+                for (int i = 0; i < listaAnimais.size(); i++) {
+                    cout << "\n---Animal #" << i + 1 << "---" << endl;
 
-void disponibilizarParaAdocao(vector<Animal *> &lista) {
-    if (lista.empty()) {
-        cout << "\nNenhum animal cadastrado.\n";
-        return;
-    }
+                    listaAnimais[i]->cadastroDados();
+                }
 
-    cout << "\n===== DISPONIBILIZAR PARA ADOCAO =====\n";
+                cout << "\nTotal: " << listaAnimais.size() << " animal(is).\n";
 
-    // Exibe lista de animais com o status de disponibilidade para adoção
-    for (int i = 0; i < lista.size(); i++) {
-        cout << "  " << i + 1 << " - " << lista[i]->getNome()
-             << " [" << (lista[i]->getParaAdocao() ? "Disponivel" : "Indisponivel") << "]" << endl;
-    }
+            }
 
-    cout << "\nDigite o numero do animal (0 para voltar): ";
-    int escolha;
-    cin >> escolha;
-    cin.ignore();
+            vector<Animal *>& getListaAnimais() {
+                return listaAnimais;
+            }
 
-    if (escolha == 0) return;
+            ~Cadastro () {
+                for (int i = 0; i < listaAnimais.size(); i++) {
+                    delete listaAnimais[i];
+                }
+            }
+};
 
-    // Verifica se a escolha é valida dentro dos limites da lista
-    if (escolha < 1 || escolha > lista.size()) {
-        cout << "Opcao invalida!\n";
-        return;
-    }
+class Adocao {
+    public:
+        void disponibilizarParaAdocao(vector<Animal *> &lista) {
+            if (lista.empty()) {
+                cout << "\nNenhum animal cadastrado.\n";
+                return;
+            }
 
-    // animal é um ponteiro porque a lista guarda ponteiros (Animal *)
-    // para acessar metodos de um ponteiro, usa -> em vez de .
-    Animal *animal = lista[escolha - 1];
+            cout << "\n=== Disponibilizar para Adocao ===\n";
+            
+            for (int i = 0; i < lista.size(); i++) {
+                cout << " " << i + 1 << " - " << lista[i]->getNome()
+                    << "[" << (lista[i]->getParaAdocao() ? "Disponível" : "Indisponível") << "]" << endl;
+            }
+                
+            cout << "\nDigite o numero do animal (0 para voltar): ";
+            int escolha;
+            cin >> escolha;
+            cin.ignore();
 
-    if (animal->getParaAdocao()) {
-        cout << "\n" << animal->getNome() << " ja esta disponivel para adocao.\n";
-    } else {
-        animal->disponibilizarAdocao();
-        cout << "\n" << animal->getNome() << " agora esta disponivel para adocao!\n";
-    }
-}
+            if (escolha == 0) return;
+
+            if (escolha < 1 || escolha > lista.size()) {
+                cout << "opcao invalida\n";
+                return;
+            }
+
+            Animal *animal = lista[escolha - 1];
+
+            if (animal->getParaAdocao()) {
+                cout << "\n" << animal->getNome() << " ja esta disponivel para adocao.\n";
+            } else {
+                animal->setParaAdocao(true);
+                cout << "\n" << animal->getNome() << " agora esta disponivel para adocao!\n";
+            }
+        }
+};
 
 int main() {
-    vector<Animal *> listaAnimais;
+    Cadastro sistemaCadastro;
+    Adocao sistemaAdocao;
     int opcao;
 
     do {
@@ -216,18 +268,20 @@ int main() {
         cout << "  3 - Disponibilizar para adocao" << endl;
         cout << "  0 - Sair" << endl;
         cout << "Escolha: ";
-        cin >> opcao;
-        cin.ignore();
+        if (!(cin >> opcao)) {
+            break;
+        }
+        cin.ignore(); // Limpa o buffer
 
         switch (opcao) {
             case 1:
-                cadastrarAnimal(listaAnimais);
+                sistemaCadastro.cadastrarAnimal();
                 break;
             case 2:
-                listarAnimais(listaAnimais);
+                sistemaCadastro.listarAnimais();
                 break;
             case 3:
-                disponibilizarParaAdocao(listaAnimais);
+                sistemaAdocao.disponibilizarParaAdocao(sistemaCadastro.getListaAnimais());
                 break;
             case 0:
                 cout << "\nAte logo!\n";
@@ -237,10 +291,6 @@ int main() {
                 break;
         }
     } while (opcao != 0);
-
-    for (int i = 0; i < listaAnimais.size(); i++) {
-        delete listaAnimais[i];
-    }
 
     return 0;
 }
